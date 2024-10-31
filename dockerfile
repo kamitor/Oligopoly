@@ -1,5 +1,5 @@
 # Use the official .NET SDK image for building the application
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
 # Copy the .csproj file and restore dependencies
@@ -11,7 +11,7 @@ COPY . ./
 RUN dotnet publish ./Source/Oligopoly.Game/Oligopoly.Game.csproj -c Release -o /app/out
 
 # Use the runtime image to run the application
-FROM mcr.microsoft.com/dotnet/runtime:7.0
+FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 
