@@ -1,0 +1,18 @@
+# Use the .NET SDK for building the game
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+WORKDIR /app
+
+# Copy the project files and restore dependencies
+COPY . ./
+RUN dotnet restore
+
+# Publish the application
+RUN dotnet publish -c Release -o out
+
+# Use the .NET runtime to run the game
+FROM mcr.microsoft.com/dotnet/runtime:7.0
+WORKDIR /app
+COPY --from=build-env /app/out .
+
+# Define the entry point for running the game
+ENTRYPOINT ["dotnet", "Oligopoly.dll"]
