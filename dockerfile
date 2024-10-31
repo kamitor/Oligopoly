@@ -1,8 +1,8 @@
-# Use the official .NET SDK image for building the application
+# Use .NET 8.0 SDK for building the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
-# Copy the .csproj file and restore dependencies
+# Copy project files and restore dependencies
 COPY Source/Oligopoly.Game/Oligopoly.Game.csproj ./Source/Oligopoly.Game/
 RUN dotnet restore ./Source/Oligopoly.Game/Oligopoly.Game.csproj
 
@@ -10,10 +10,10 @@ RUN dotnet restore ./Source/Oligopoly.Game/Oligopoly.Game.csproj
 COPY . ./
 RUN dotnet publish ./Source/Oligopoly.Game/Oligopoly.Game.csproj -c Release -o /app/out
 
-# Use the runtime image to run the application
+# Use .NET 8.0 runtime for running the application
 FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 
-# Set the entry point to run the console application
+# Entry point
 ENTRYPOINT ["dotnet", "Oligopoly.Game.dll"]
